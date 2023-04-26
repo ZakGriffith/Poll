@@ -7,14 +7,19 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
   const { deployer } = await getNamedAccounts();
   const chianId = await getChainId();
 
-  await deploy("ExampleExternalContract", {
+  await deploy("Polling", {
     // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
     from: deployer,
     // args: [ "Hello", ethers.utils.parseEther("1.5") ],
     log: true,
   });
 
-  const exampleExternalContract = await ethers.getContract("ExampleExternalContract");
+  const polling = await ethers.getContract("Polling");
+
+  console.log("\n 🤹  Sending ownership...\n")
+  const ownershipTransaction = await polling.transferOwnership("0x38F84e92B468a1885e73CedC9A4d5632DE07EABB");
+  console.log("\n    ✅ confirming...\n");
+  const ownershipResult = await ownershipTransaction.wait();
 
   // Getting a previously deployed contract
   // const ExampleExternalContract = await ethers.getContract(
@@ -67,4 +72,4 @@ module.exports = async ({ getNamedAccounts, deployments, getChainId }) => {
 //   return new Promise((resolve) => setTimeout(resolve, ms));
 // }
 
-module.exports.tags = ["ExampleExternalContract"];
+module.exports.tags = ["Polling"];

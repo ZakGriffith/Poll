@@ -1,7 +1,7 @@
 import WalletConnectProvider from "@walletconnect/web3-provider";
 //import Torus from "@toruslabs/torus-embed"
 import WalletLink from "walletlink";
-import { Alert, Button, Col, Menu, Row, List } from "antd";
+import { Alert, Button, Col, Menu, Row, List, Card, Input } from "antd";
 import "antd/dist/antd.css";
 import React, { useCallback, useEffect, useState } from "react";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
@@ -28,6 +28,7 @@ import Portis from "@portis/web3";
 import Fortmatic from "fortmatic";
 import Authereum from "authereum";
 import humanizeDuration from "humanize-duration";
+import DisplayVariable from "./components/Contract/DisplayVariable";
 
 const { ethers } = require("ethers");
 /*
@@ -50,7 +51,7 @@ const { ethers } = require("ethers");
 */
 
 /// 📡 What chain are your contracts deployed to?
-const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const targetNetwork = NETWORKS.sepolia; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -269,12 +270,12 @@ function App(props) {
   console.log("⏳ timeLeft:", timeLeft);
 
   // ** Listen for when the contract has been 'completed'
-  const complete = useContractReader(readContracts, "ExampleExternalContract", "completed");
+  const complete = useContractReader(readContracts, "Polling", "completed");
   console.log("✅ complete:", complete);
 
   const exampleExternalContractBalance = useBalance(
     localProvider,
-    readContracts && readContracts.ExampleExternalContract ? readContracts.ExampleExternalContract.address : null,
+    readContracts && readContracts.Polling ? readContracts.Polling.address : null,
   );
   if (DEBUG) console.log("💵 exampleExternalContractBalance", exampleExternalContractBalance);
 
@@ -282,7 +283,7 @@ function App(props) {
   if (complete) {
     completeDisplay = (
       <div style={{ padding: 64, backgroundColor: "#eeffef", fontWeight: "bolder", color: "rgba(0, 0, 0, 0.85)" }}>
-        🚀 🎖 👩‍🚀 -- Staking App triggered `ExampleExternalContract` -- 🎉 🍾 🎊
+        🚀 🎖 👩‍🚀 -- Staking App triggered `Polling` -- 🎉 🍾 🎊
         <Balance balance={exampleExternalContractBalance} fontSize={64} /> ETH staked!
       </div>
     );
@@ -416,6 +417,9 @@ function App(props) {
     );
   }
 
+  const pollingEvents = useEventListener(readContracts, "Polling", "Voted", localProvider, 1);
+  console.log("📟 Voting Events:", pollingEvents);
+
   const loadWeb3Modal = useCallback(async () => {
     const provider = await web3Modal.connect();
     setInjectedProvider(new ethers.providers.Web3Provider(provider));
@@ -478,6 +482,16 @@ function App(props) {
     );
   }
 
+  const [myVote, setMyVote] = useState({
+    valid: false,
+    value: "0",
+  });
+
+
+  const [voting, setVoting] = useState();
+
+  const [results, setResults] = useState([]);
+
   return (
     <div className="App">
       {/* ✏️ Edit the header and change the title to your project name */}
@@ -492,7 +506,17 @@ function App(props) {
               }}
               to="/"
             >
-              Staker UI
+              Vote
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="/results">
+            <Link
+              onClick={() => {
+                setRoute("/results");
+              }}
+              to="/results"
+            >
+              Results
             </Link>
           </Menu.Item>
           <Menu.Item key="/contracts">
@@ -511,108 +535,73 @@ function App(props) {
           <Route exact path="/">
             {completeDisplay}
 
-            <div style={{ padding: 8, marginTop: 32 }}>
-              <div>Staker Contract:</div>
-              <Address value={readContracts && readContracts.Staker && readContracts.Staker.address} />
-            </div>
+            <div style={{ width: 300, margin: "auto", marginTop: 64}}>
+              <Card title="Scaffold-ETH2 Hackathon">
+                <div style={{ padding: 8 }}>
+                  <h3>People's Choice Award Voting!</h3>
+                  <a href="https://docs.google.com/spreadsheets/d/1-mnvyR-IONPI2K79oVDn6oaj35BifcpZuMxWy4dpgTA/edit#gid=224062085" target="_blank">View All Hackathon Submissions Here</a><br></br>
+                  <span>Vote on your favorite below.  Enter the submission number in the field and click Vote!</span><br></br><br></br>
+                  <span>Voting open until ...</span>
+                  <div style={{margin: 8}}>
+                    <Input
+                      type="number"
+                      min="1"
+                      max="43"
+                      maxLength={2}
+                      style={{ textAlign: "center" }}
+                      placeholder={"Enter Submission # Here"}
+                      onChange={e => {
+                        setMyVote(e.target.value);        
+                      }}
+                  />
+                  </div>
+                </div>
 
-            <div style={{ padding: 8, marginTop: 32 }}>
-              <div>Timeleft:</div>
-              {timeLeft && humanizeDuration(timeLeft.toNumber() * 1000)}
-            </div>
-
-            <div style={{ padding: 8 }}>
-              <div>Total staked:</div>
-              <Balance balance={stakerContractBalance} fontSize={64} />/<Balance balance={threshold} fontSize={64} />
-            </div>
-
-            <div style={{ padding: 8 }}>
-              <div>You staked:</div>
-              <Balance balance={balanceStaked} fontSize={64} />
-            </div>
-
-            <div style={{ padding: 8 }}>
-              <Button
-                type={"default"}
-                onClick={() => {
-                  tx(writeContracts.Staker.execute());
-                }}
-              >
-                📡 Execute!
-              </Button>
-            </div>
-
-            <div style={{ padding: 8 }}>
-              <Button
-                type={"default"}
-                onClick={() => {
-                  tx(writeContracts.Staker.withdraw());
-                }}
-              >
-                🏧 Withdraw
-              </Button>
-            </div>
-
-            <div style={{ padding: 8 }}>
-              <Button
-                type={balanceStaked ? "success" : "primary"}
-                onClick={() => {
-                  tx(writeContracts.Staker.stake({ value: ethers.utils.parseEther("0.5") }));
-                }}
-              >
-                🥩 Stake 0.5 ether!
-              </Button>
-            </div>
-
-            {/*
-                🎛 this scaffolding is full of commonly used components
-                this <Contract/> component will automatically parse your ABI
-                and give you a form to interact with it locally
-            */}
-
-            <div style={{ width: 500, margin: "auto", marginTop: 64 }}>
-              <div>Stake Events:</div>
-              <List
-                dataSource={stakeEvents}
-                renderItem={item => {
-                  return (
-                    <List.Item key={item.blockNumber}>
-                      <Address value={item.args[0]} ensProvider={mainnetProvider} fontSize={16} /> =>
-                      <Balance balance={item.args[1]} />
-                    </List.Item>
-                  );
-                }}
-              />
-            </div>
-
-            {/* uncomment for a second contract:
-            <Contract
-              name="SecondContract"
-              signer={userProvider.getSigner()}
-              provider={localProvider}
-              address={address}
-              blockExplorer={blockExplorer}
-              contractConfig={contractConfig}
-            />
-            */}
+                <div style={{ padding: 8 }}>
+                  <Button
+                    type={"primary"}
+                    loading={voting}
+                    onClick={async () => {
+                      setVoting(true);
+                      console.log("Voting with value:", myVote);
+                      await tx(writeContracts.Polling.vote(myVote));
+                      setVoting(false);
+                    }}
+                  >
+                    Vote!
+                  </Button>
+                </div>
+              </Card>
+            </div> 
+              
           </Route>
           <Route path="/contracts">
             <Contract
-              name="Staker"
+              name="Polling"
               signer={userSigner}
               provider={localProvider}
               address={address}
               blockExplorer={blockExplorer}
               contractConfig={contractConfig}
             />
-            <Contract
-              name="ExampleExternalContract"
-              signer={userSigner}
-              provider={localProvider}
-              address={address}
-              blockExplorer={blockExplorer}
-              contractConfig={contractConfig}
-            />
+          </Route>
+          <Route path="/results">
+          <div style={{ width: 300, margin: "auto", marginTop: 64}}>
+            <Card>
+              <div>Votes:</div>
+              <List
+                  dataSource={pollingEvents}
+                  renderItem={item => {
+                    return (
+                      <List.Item key={item.blockNumber + item.blockHash}>
+                        <Address value={item.args[0]} ensProvider={mainnetProvider} fontSize={16} />
+                        <span style={{fontSize: 16}}> {String(ethers.utils.formatEther(item.args[1])).slice(-2)} </span>
+                      </List.Item>
+                    );
+                  }}
+                />
+            </Card> 
+          </div>
           </Route>
         </Switch>
       </BrowserRouter>
