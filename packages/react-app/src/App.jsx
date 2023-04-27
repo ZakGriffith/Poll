@@ -51,7 +51,7 @@ const { ethers } = require("ethers");
 */
 
 /// 📡 What chain are your contracts deployed to?
-const targetNetwork = NETWORKS.sepolia; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
+const targetNetwork = NETWORKS.localhost; // <------- select your target frontend network (localhost, rinkeby, xdai, mainnet)
 
 // 😬 Sorry for all the console logging
 const DEBUG = true;
@@ -246,53 +246,26 @@ function App(props) {
     "0x34aA3F359A9D614239015126635CE7732c18fDF3",
   ]);
 
-  //keep track of contract balance to know how much has been staked total:
-  const stakerContractBalance = useBalance(
-    localProvider,
-    readContracts && readContracts.Staker ? readContracts.Staker.address : null,
-  );
-  if (DEBUG) console.log("💵 stakerContractBalance", stakerContractBalance);
+  const voteEvents = useEventListener(readContracts, "Polling", "Voted", localProvider, 1);
+  console.log("Vote events:", voteEvents);
 
-  // ** keep track of total 'threshold' needed of ETH
-  const threshold = useContractReader(readContracts, "Staker", "threshold");
-  console.log("💵 threshold:", threshold);
-
-  // ** keep track of a variable from the contract in the local React state:
-  const balanceStaked = useContractReader(readContracts, "Staker", "balances", [address]);
-  console.log("💸 balanceStaked:", balanceStaked);
-
-  // ** 📟 Listen for broadcast events
-  const stakeEvents = useEventListener(readContracts, "Staker", "Stake", localProvider, 1);
-  console.log("📟 stake events:", stakeEvents);
-
-  // ** keep track of a variable from the contract in the local React state:
-  const timeLeft = useContractReader(readContracts, "Staker", "timeLeft");
-  console.log("⏳ timeLeft:", timeLeft);
-
-  // ** Listen for when the contract has been 'completed'
-  const complete = useContractReader(readContracts, "Polling", "completed");
-  console.log("✅ complete:", complete);
-
-  const exampleExternalContractBalance = useBalance(
-    localProvider,
-    readContracts && readContracts.Polling ? readContracts.Polling.address : null,
-  );
-  if (DEBUG) console.log("💵 exampleExternalContractBalance", exampleExternalContractBalance);
-
-  let completeDisplay = "";
-  if (complete) {
-    completeDisplay = (
-      <div style={{ padding: 64, backgroundColor: "#eeffef", fontWeight: "bolder", color: "rgba(0, 0, 0, 0.85)" }}>
-        🚀 🎖 👩‍🚀 -- Staking App triggered `Polling` -- 🎉 🍾 🎊
-        <Balance balance={exampleExternalContractBalance} fontSize={64} /> ETH staked!
-      </div>
-    );
+  //Here we need to change what the user sees if they have already voted.
+  let voted = false;
+  for (let u = 0; u<voteEvents.length; u++) {
+    if(address == voteEvents[u]?.args[0]) {
+      voted=true;
+    }
   }
 
-  /*
-  const addressFromENS = useResolveName(mainnetProvider, "austingriffith.eth");
-  console.log("🏷 Resolved austingriffith.eth as:", addressFromENS)
-  */
+  let votedDisplay = "";
+  if(voted) {
+    votedDisplay = (
+      <div style={{ padding: 32, fontWeight: "bolder", fontSize: "large" }}>
+        Thank you for voting!!
+      </div>
+    )
+  }
+
 
   //
   // 🧫 DEBUG 👨🏻‍🔬
@@ -417,9 +390,6 @@ function App(props) {
     );
   }
 
-  const pollingEvents = useEventListener(readContracts, "Polling", "Voted", localProvider, 1);
-  console.log("📟 Voting Events:", pollingEvents);
-
   const loadWeb3Modal = useCallback(async () => {
     const provider = await web3Modal.connect();
     setInjectedProvider(new ethers.providers.Web3Provider(provider));
@@ -482,15 +452,158 @@ function App(props) {
     );
   }
 
-  const [myVote, setMyVote] = useState({
-    valid: false,
-    value: "0",
-  });
-
-
+  const optionCount=44;
+  const [myVote, setMyVote] = useState(new Array(optionCount).fill(0));
   const [voting, setVoting] = useState();
-
   const [results, setResults] = useState([]);
+  const [allocated, setAllocated] = useState(0);
+  const [buttonEnabled, setButtonEnabled] = useState(false);
+  const submissions = [
+    "",
+    "LSD ()()()",
+    "PoP: Proof of Prompt",
+    "Tic Tac Toe Smart Contract",
+    "History NFT",
+    "Family Contributors",
+    "SolidStreaming",
+    "Pokemon-Wars",
+    "Mecenate",
+    "GoBuidlMe",
+    "Buidlguidl Funding",
+    "CES-2 work listing dapp",
+    "Cross",
+    "SE-2-Foundry",
+    "Web3 Pomodoro",
+    "Promises on ETH",
+    "P2P NFT Lending Borrowing Platform",
+    "c-entry",
+    "Intergalactic Marble Race",
+    "LENS LENDING",
+    "Proof of Participation",
+    "Storagoor ( •̀ ω •́ )✧",
+    "PxLend",
+    "Multisig-SE2",
+    "Apartments Reviews",
+    "MultiSig Factory",
+    "Country Club",
+    "P2P Addspace",
+    "TicketKiosk - Event tickets on-chain",
+    "Ai Article generator and article marketplace",
+    "CharityStream",
+    "Unit - NFT Marketplace",
+    "SE2 Token MultiSend Transfer Contract",
+    "SE2H NFT Mint App",
+    "TrueToken",
+    "NFT Collateral",
+    "Accountability Protocol",
+    "NFT Passport",
+    "Proof of Engagement Protocol",
+    "ZKVerifier",
+    "Scaffold-ETH-2 with pnpm",
+    "No-Life",
+    "Emotion owned liquidity",
+    "YEETH - YEET your ETH!"
+  ];
+  let allocatedDisplay="";
+  let optionsDisplay="";
+  function calculateAllocated() {
+    let count=0;
+    let i=0;
+    console.log("i = ",i);
+    while(i<optionCount) {
+      console.log("i", i, " myVote[i]", myVote[i]);
+      count+=myVote[i];
+      i++;
+    }
+    console.log("Count:", count);
+    setAllocated(count);
+    if(count==100){ 
+      setButtonEnabled(true);
+    } else {
+      setButtonEnabled(false);
+    }
+    console.log("Allocated: ", allocated);
+  }
+  let buttonDisplay="";
+  if(!voted) {
+    buttonDisplay = (
+      <div style={{ padding: 8 }}>
+      <Button
+        type={"primary"}
+        loading={voting}
+        disabled={!buttonEnabled}
+        style={{width: 300, height: 50, fontSize: 25, marginTop: "25px"}}
+        onClick={async () => {
+          setVoting(true);
+          let total=0;
+          for (let i = 0; i < myVote.length; i++) {
+            console.log("i", i);
+            console.log("myVote[i]", myVote[i]);
+            if(!isNaN(myVote[i]) && typeof myVote[i] !== 'undefined') {
+              total+=myVote[i];
+            } else {
+              myVote[i]=0;
+            }
+            console.log("Total:", total);
+          } 
+          if(total==100) {
+            console.log("myVote", myVote);
+            await tx(writeContracts.Polling.vote(myVote));
+            setMyVote([]);
+            //Clear all number inputs here
+          } 
+          setVoting(false);
+        }}
+      >
+        Vote!
+      </Button>
+    </div>
+    )
+    if(isNaN(allocated)) {
+      setAllocated(0);
+    }
+    if(allocated < 100) {
+      allocatedDisplay = (
+        <div style={{fontWeight: "bold", fontSize: "20px", marginBottom: "5px"}}>({allocated}/100) Votes Allocated</div>
+      )
+    } else if (allocated == 100) {
+      allocatedDisplay = (
+        <div style={{fontWeight: "bold", fontSize: "20px", marginBottom: "5px"}}>(<span style={{color: "green"}}>{allocated}/100</span>) Votes Allocated</div>
+      )
+    } else if (allocated >= 100){
+      allocatedDisplay = (
+        <div style={{fontWeight: "bold", fontSize: "20px", marginBottom: "5px"}}>(<span style={{color: "red"}}>{allocated}/100</span>) Votes Allocated</div>
+      )
+    } 
+    
+    optionsDisplay = (
+      (() => {
+        const arr = [];
+        arr.push(allocatedDisplay)
+        for (let i = 1; i < optionCount; i++) {
+            arr.push(
+                <div style={{fontWeight: "bold", float:"left", width: "100%"}}>            
+                  <Input
+                      type="number"
+                      min="0"
+                      style={{ textAlign: "left", width: 80, float: "left"}}
+                      placeholder={"0"}
+                      onChange={e => {
+                        myVote[i] = (parseInt(e.target.value));
+                        calculateAllocated();
+                        console.log("ALLOCATED", allocated); 
+                      }}
+                  />
+                  <span style={{float: "left", marginLeft: "20px", marginTop: "4px"}}>{submissions[i]}</span>
+                </div>
+            );
+        }
+        return arr;
+      })()
+    )
+  } else {
+    optionsDisplay=votedDisplay;
+  }
 
   return (
     <div className="App">
@@ -498,7 +611,7 @@ function App(props) {
       <Header />
       {networkDisplay}
       <BrowserRouter>
-        <Menu style={{ textAlign: "center" }} selectedKeys={[route]} mode="horizontal">
+        {/* <Menu style={{ textAlign: "center" }} selectedKeys={[route]} mode="horizontal">
           <Menu.Item key="/">
             <Link
               onClick={() => {
@@ -516,7 +629,7 @@ function App(props) {
               }}
               to="/results"
             >
-              Results
+              Voted List
             </Link>
           </Menu.Item>
           <Menu.Item key="/contracts">
@@ -529,48 +642,23 @@ function App(props) {
               Debug Contracts
             </Link>
           </Menu.Item>
-        </Menu>
+        </Menu> */}
 
         <Switch>
           <Route exact path="/">
-            {completeDisplay}
 
-            <div style={{ width: 300, margin: "auto", marginTop: 64}}>
-              <Card title="Scaffold-ETH2 Hackathon">
-                <div style={{ padding: 8 }}>
-                  <h3>People's Choice Award Voting!</h3>
-                  <a href="https://docs.google.com/spreadsheets/d/1-mnvyR-IONPI2K79oVDn6oaj35BifcpZuMxWy4dpgTA/edit#gid=224062085" target="_blank">View All Hackathon Submissions Here</a><br></br>
-                  <span>Vote on your favorite below.  Enter the submission number in the field and click Vote!</span><br></br><br></br>
-                  <span>Voting open until ...</span>
-                  <div style={{margin: 8}}>
-                    <Input
-                      type="number"
-                      min="1"
-                      max="43"
-                      maxLength={2}
-                      style={{ textAlign: "center" }}
-                      placeholder={"Enter Submission # Here"}
-                      onChange={e => {
-                        setMyVote(e.target.value);        
-                      }}
-                  />
-                  </div>
+            <div style={{ width: 650, margin: "auto", marginTop: 32}}>
+              <Card>
+                <div style={{ padding: 8}}>
+                  <h2>People's Choice Award Voting!</h2><br></br>
+                  <h3><a href="https://docs.google.com/spreadsheets/d/1-mnvyR-IONPI2K79oVDn6oaj35BifcpZuMxWy4dpgTA/edit#gid=224062085" target="_blank">👀 View All Hackathon Submissions Here! 👀</a></h3>
+                  <br></br>
+                  <span>Each Hackathon submitter and BuidlGuidl member get 100 votes to allocate as they wish.  You only get to vote one time, so make sure you have allocated all 100 votes!</span><br></br><br></br>
+                  <span>Voting open until ...</span><br></br><br></br>                        
+                  {optionsDisplay}
+                  {allocatedDisplay}
                 </div>
-
-                <div style={{ padding: 8 }}>
-                  <Button
-                    type={"primary"}
-                    loading={voting}
-                    onClick={async () => {
-                      setVoting(true);
-                      console.log("Voting with value:", myVote);
-                      await tx(writeContracts.Polling.vote(myVote));
-                      setVoting(false);
-                    }}
-                  >
-                    Vote!
-                  </Button>
-                </div>
+                {buttonDisplay}
               </Card>
             </div> 
               
@@ -590,12 +678,11 @@ function App(props) {
             <Card>
               <div>Votes:</div>
               <List
-                  dataSource={pollingEvents}
+                  dataSource={voteEvents}
                   renderItem={item => {
                     return (
                       <List.Item key={item.blockNumber + item.blockHash}>
                         <Address value={item.args[0]} ensProvider={mainnetProvider} fontSize={16} />
-                        <span style={{fontSize: 16}}> {String(ethers.utils.formatEther(item.args[1])).slice(-2)} </span>
                       </List.Item>
                     );
                   }}
@@ -624,19 +711,19 @@ function App(props) {
         {faucetHint}
       </div>
 
-      <div style={{ marginTop: 32, opacity: 0.5 }}>
+      <div style={{ marginTop: 32, paddingBottom: 32}}>
         {/* Add your address here */}
-        Created by <Address value={"Your...address"} ensProvider={mainnetProvider} fontSize={16} />
+        Built by the 🏰 BuidlGuidl
       </div>
 
-      <div style={{ marginTop: 32, opacity: 0.5 }}>
+      {/* <div style={{ marginTop: 32 }}>
         <a target="_blank" style={{ padding: 32, color: "#000" }} href="https://github.com/scaffold-eth/scaffold-eth">
           🍴 Fork me!
         </a>
-      </div>
+      </div> */}
 
       {/* 🗺 Extra UI like gas price, eth price, faucet, and support: */}
-      <div style={{ position: "fixed", textAlign: "left", left: 0, bottom: 20, padding: 10 }}>
+      {/* <div style={{ position: "fixed", textAlign: "left", left: 0, bottom: 20, padding: 10 }}>
         <Row align="middle" gutter={[4, 4]}>
           <Col span={8}>
             <Ramp price={price} address={address} networks={NETWORKS} />
@@ -664,7 +751,6 @@ function App(props) {
         <Row align="middle" gutter={[4, 4]}>
           <Col span={24}>
             {
-              /*  if the local provider has a signer, let's show the faucet:  */
               faucetAvailable ? (
                 <Faucet localProvider={localProvider} price={price} ensProvider={mainnetProvider} />
               ) : (
@@ -673,7 +759,7 @@ function App(props) {
             }
           </Col>
         </Row>
-      </div>
+      </div> */}
     </div>
   );
 }

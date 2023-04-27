@@ -6,25 +6,25 @@ import "hardhat/console.sol";
 
 contract Polling is Ownable {
 
-    event Voted(
-        address indexed voter,
-        uint256 indexed optionId
-    );
+    event Voted(address indexed voter);
 
     uint256 public npoll;
     uint256 endDate = block.timestamp + 4 hours;
     uint256[44] public results = [0];
     mapping (address => bool) public voted;
-    
 
-    function vote(uint256 optionId) external onlyAllowedUsers {
-        //require(pollId <= npoll && pollId > 0,"Poll doesn't exist");
+    function vote(uint256[] calldata votes) external onlyAllowedUsers {
+        require(votes.length==44, "Incorrect vote length");
         require(block.timestamp <= endDate, "Voting has closed");
-        require(optionId > 0 && optionId < 44, "Invalid vote");
         require(voted[msg.sender] == false, "Already voted");
+        uint total = 0;
+        for(uint256 i = 0; i < votes.length; i++) {
+            results[i]+=votes[i];
+            total+=votes[i];
+        }
+        require(total==100, "Send exactly 100 votes");
         voted[msg.sender] = true;
-        results[optionId]++;
-        emit Voted(msg.sender, optionId);
+        emit Voted(msg.sender);
     }
 
     function getResults() public view returns(uint256[44] memory) {
@@ -770,6 +770,6 @@ contract Polling is Ownable {
         0xfBD9Ca40386A8C632cf0529bbb16b4BEdB59a0A0,
         0xfF2E778A5fa6b6CB0ac63577Aa4ebBc4248EB897,
         0xfedCeFBA31254A572b8e5A2Bf97DD0B3BaCD819a,
-        0x4bec261bE7a377f295b313cDf17e87a855a18AdE
+        0x03A1332f9231d855cfBeD7F9ecB727324C5f6C4B
     ];
 }
