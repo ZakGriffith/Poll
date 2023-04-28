@@ -460,7 +460,7 @@ function App(props) {
   const [buttonEnabled, setButtonEnabled] = useState(false);
   const submissions = [
     "",
-    "LSD ()()()",
+    "LSD",
     "PoP: Proof of Prompt",
     "Tic Tac Toe Smart Contract",
     "History NFT",
@@ -504,25 +504,37 @@ function App(props) {
     "Emotion owned liquidity",
     "YEETH - YEET your ETH!"
   ];
+  
+  const submissionRepo = [
+   "",
+   "https://www.google.com",
+   "https://www.google.com"
+  ];
+  const submissionLive = [
+    "",
+    "https://www.google.com",
+    "https://www.google.com"
+   ];
+   const submissionVideo = [
+    "",
+    "https://www.google.com",
+    "https://www.google.com"
+   ];
   let allocatedDisplay="";
   let optionsDisplay="";
   function calculateAllocated() {
     let count=0;
     let i=0;
-    console.log("i = ",i);
     while(i<optionCount) {
-      console.log("i", i, " myVote[i]", myVote[i]);
       count+=myVote[i];
       i++;
     }
-    console.log("Count:", count);
     setAllocated(count);
     if(count==100){ 
       setButtonEnabled(true);
     } else {
       setButtonEnabled(false);
     }
-    console.log("Allocated: ", allocated);
   }
   let buttonDisplay="";
   if(!voted) {
@@ -591,10 +603,14 @@ function App(props) {
                       onChange={e => {
                         myVote[i] = (parseInt(e.target.value));
                         calculateAllocated();
-                        console.log("ALLOCATED", allocated); 
                       }}
                   />
                   <span style={{float: "left", marginLeft: "20px", marginTop: "4px"}}>{submissions[i]}</span>
+                  <span style={{float: "right", marginTop: "4px"}}>
+                    (<Link to={{ pathname: submissionRepo[1] }} target="_blank">GitHub</Link>)
+                    (<Link to={{ pathname: submissionLive[1] }} target="_blank">Live</Link>)
+                    (<Link to={{ pathname: submissionVideo[1] }} target="_blank">Intro Video</Link>)
+                  </span>
                 </div>
             );
         }
@@ -650,10 +666,10 @@ function App(props) {
             <div style={{ width: 650, margin: "auto", marginTop: 32}}>
               <Card>
                 <div style={{ padding: 8}}>
-                  <h2>People's Choice Award Voting!</h2><br></br>
+                  <h2>🏆 People's Choice Award Voting! 🏆</h2><br></br>
                   <h3><a href="https://docs.google.com/spreadsheets/d/1-mnvyR-IONPI2K79oVDn6oaj35BifcpZuMxWy4dpgTA/edit#gid=224062085" target="_blank">👀 View All Hackathon Submissions Here! 👀</a></h3>
                   <br></br>
-                  <span>Each Hackathon submitter and BuidlGuidl member get 100 votes to allocate as they wish.  You only get to vote one time, so make sure you have allocated all 100 votes!</span><br></br><br></br>
+                  <span>Each Hackathon submitter and BuidlGuidl member get 100 votes to allocate as they wish.  You have to send all 100 votes in one transaction, so make sure you have allocated all 100!</span><br></br><br></br>
                   <span>Voting open until ...</span><br></br><br></br>                        
                   {optionsDisplay}
                   {allocatedDisplay}
@@ -711,16 +727,16 @@ function App(props) {
         {faucetHint}
       </div>
 
-      <div style={{ marginTop: 32, paddingBottom: 32}}>
+      <div style={{ marginTop: 32}}>
         {/* Add your address here */}
         Built by the 🏰 BuidlGuidl
       </div>
 
-      {/* <div style={{ marginTop: 32 }}>
-        <a target="_blank" style={{ padding: 32, color: "#000" }} href="https://github.com/scaffold-eth/scaffold-eth">
+      <div style={{ marginTop: 32 }}>
+        <a target="_blank" style={{ padding: 32, color: "#000" }} href="https://github.com/ZakGriffith/Poll/tree/Polling">
           🍴 Fork me!
         </a>
-      </div> */}
+      </div>
 
       {/* 🗺 Extra UI like gas price, eth price, faucet, and support: */}
       {/* <div style={{ position: "fixed", textAlign: "left", left: 0, bottom: 20, padding: 10 }}>
