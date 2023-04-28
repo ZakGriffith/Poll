@@ -793,7 +793,7 @@ function App(props) {
                   <h3><a href="https://docs.google.com/spreadsheets/d/1-mnvyR-IONPI2K79oVDn6oaj35BifcpZuMxWy4dpgTA/edit#gid=224062085" target="_blank">👀 View All Hackathon Submissions Here! 👀</a></h3>
                   <br></br>
                   <span>Hackathon submitters and BuidlGuidl members each get 100 votes to allocate as they wish.  You have to send all 100 votes in one transaction, so make sure you have allocated all 100!</span><br></br><br></br>
-                  <span>Voting open until ...</span><br></br><br></br>                        
+                  <span>Voting open until XX/XX/XX</span><br></br><br></br>                        
                   {optionsDisplay}
                   {allocatedDisplay}
                 </div>

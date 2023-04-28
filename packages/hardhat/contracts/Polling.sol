@@ -12,39 +12,6 @@ contract Polling is Ownable {
     uint256 endDate = block.timestamp + 4 hours;
     uint256[44] public results = [0];
     mapping (address => bool) public voted;
-
-    function vote(uint256[] calldata votes) external onlyAllowedUsers {
-        require(votes.length==44, "Incorrect vote length");
-        require(block.timestamp <= endDate, "Voting has closed");
-        require(voted[msg.sender] == false, "Already voted");
-        uint total = 0;
-        for(uint256 i = 0; i < votes.length; i++) {
-            results[i]+=votes[i];
-            total+=votes[i];
-        }
-        require(total==100, "Send exactly 100 votes");
-        voted[msg.sender] = true;
-        emit Voted(msg.sender);
-    }
-
-    function getResults() public view returns(uint256[44] memory) {
-        return results;
-    }
-
-    modifier onlyAllowedUsers() {
-        for(uint index = 0; index < allowedUsers.length; index++){
-            if(allowedUsers[index]==msg.sender){
-                _;
-                return;
-            }
-        }
-        revert("Address not in allowed list"); 
-    }
-
-    function addAllowedUser(address _user) public onlyOwner {
-        allowedUsers.push(_user);
-    }
-
     address[] public allowedUsers = [
         0x0000000000098341a924BD53454654A0dBBc4e43,
         0x000c9858250dA860FFf404c5E8a8d7C7CD64E8AF,
@@ -770,6 +737,40 @@ contract Polling is Ownable {
         0xfBD9Ca40386A8C632cf0529bbb16b4BEdB59a0A0,
         0xfF2E778A5fa6b6CB0ac63577Aa4ebBc4248EB897,
         0xfedCeFBA31254A572b8e5A2Bf97DD0B3BaCD819a,
-        0x03A1332f9231d855cfBeD7F9ecB727324C5f6C4B
+        0x03A1332f9231d855cfBeD7F9ecB727324C5f6C4B,
+        0x4bec261bE7a377f295b313cDf17e87a855a18AdE
     ];
+
+    function vote(uint256[] calldata votes) external onlyAllowedUsers {
+        require(votes.length==44, "Incorrect vote length");
+        require(block.timestamp <= endDate, "Voting has closed");
+        require(voted[msg.sender] == false, "Already voted");
+        uint total = 0;
+        for(uint256 i = 0; i < votes.length; i++) {
+            results[i]+=votes[i];
+            total+=votes[i];
+        }
+        require(total==100, "Send exactly 100 votes");
+        voted[msg.sender] = true;
+        emit Voted(msg.sender);
+    }
+
+    function getResults() public view returns(uint256[44] memory) {
+        return results;
+    }
+
+    function addAllowedUser(address _user) public onlyOwner {
+        allowedUsers.push(_user);
+    }
+
+    modifier onlyAllowedUsers() {
+        for(uint index = 0; index < allowedUsers.length; index++){
+            if(allowedUsers[index]==msg.sender){
+                _;
+                return;
+            }
+        }
+        revert("Address not in allowed list"); 
+    }
+
 }
