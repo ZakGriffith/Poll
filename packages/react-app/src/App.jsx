@@ -506,19 +506,142 @@ function App(props) {
   ];
   
   const submissionRepo = [
-   "",
-   "https://www.google.com",
-   "https://www.google.com"
+  "",
+  "https://github.com/kevinjoshi46b/lsd",
+  "https://github.com/gjacuna/pop",
+  "https://github.com/cacosta88/pipoca_se2_hackathon",
+  "https://github.com/cart0uche/History-NFT",
+  "https://github.com/web3goals/family-contributors-prototype",
+  "https://github.com/solidoracle/solidstreaming",
+  "https://github.com/Abbas-Khann/Pokemon-Attack",
+  "https://github.com/scobru/mecenate-monorepo",
+  "https://github.com/CMD10M/GoBuidlMe",
+  "https://github.com/KcPele/se-2/tree/buidlguidlfunding",
+  "https://github.com/NewearthartTech/ces-2",
+  "https://github.com/EngrGord/Cross",
+  "https://github.com/0xSooki/se-2-foundry",
+  "https://github.com/oemerfurkan/web3-pomodoro",
+  "https://github.com/tokodev/eth-promises",
+  "https://github.com/uok825/p2p-nft-lending",
+  "https://github.com/wildanvin/c-entry",
+  "https://github.com/SpaceUY/scaffoldeth-hackathon",
+  "https://github.com/kriptoe/se-2/tree/main/packages",
+  "https://github.com/ysongh/First-Project-with-Scaffold-Eth2/tree/scaffoldeth2",
+  "https://github.com/portdeveloper/storagoor",
+  "https://github.com/alikonuk1/se-2/tree/main",
+  "https://github.com/Naim-Bijapure/multisig-se2",
+  "https://github.com/electrone901/apartment-reviews",
+  "https://github.com/mertcanciy/se-2",
+  "https://github.com/hurley87/country-club",
+  "https://github.com/sverps/p2p-addspace",
+  "https://github.com/damianmarti/ticketing",
+  "https://github.com/spiritbroski/decentralized-ai-article",
+  "https://github.com/nzmpi/CharityStream-se2-hackathon",
+  "https://github.com/ValentineCodes/se-2",
+  "https://github.com/NJarosz/se-2.git",
+  "https://github.com/xyuu98/se-2",
+  "https://github.com/spichen/truetoken.one",
+  "https://github.com/RevanthGundala/NFTCollateral/tree/NFTCollateral",
+  "https://github.com/ronnakamoto/accountability-protocol",
+  "https://github.com/Nazeeh21/NFT-passport",
+  "https://github.com/angelmc32/poep",
+  "https://github.com/AvinashNayak27/scafflodETHDemo",
+  "https://github.com/darrylyeo/se-2/tree/pnpm",
+  "https://github.com/RohanNero/No-Life",
+  "https://github.com/The-Wary-One/emotion-owned-liquidity",
+  "https://github.com/sigmachirality/yeeth"
   ];
   const submissionLive = [
     "",
-    "https://www.google.com",
-    "https://www.google.com"
+    "https://lsd-kevinjoshi46b.vercel.app/",
+    "https://pop-nextjs.vercel.app/",
+    "https://www.youtube.com/watch?v=a_mNnkebA2E",
+    "https://historynft-cart0uche.vercel.app/",
+    "https://family-contributors-app.vercel.app/",
+    "https://solidstreaming.vercel.app/",
+    "https://pokemon-wars.vercel.app/",
+    "https://mecenate.vercel.app/",
+    "https://gobuidlme-cmd10m.vercel.app/",
+    "https://buidlguidlfunding-kcpele.vercel.app/",
+    "https://ces-2-nextjs-nine.vercel.app/listings",
+    "https://cross-bridge-xi.vercel.app/",
+    "https://se-2-foundry.vercel.app/",
+    "https://blockchain-pomodoro-omertheblnk-gmailcom.vercel.app/",
+    "https://eth-promises-nextjs.vercel.app/",
+    "https://p2pnftlending.vercel.app/",
+    "https://c-entry.vercel.app/",
+    "https://scaffoldeth-hackaton.vercel.app/",
+    "https://www.floor101.dev/",
+    "https://proof-of-participation.vercel.app/",
+    "https://storagoor.vercel.app/",
+    "https://se-2-alikonuk1.vercel.app/",
+    "https://multisig-se2-naimbijapure7407.vercel.app/",
+    "https://nfts-apartment-referrals.netlify.app/",
+    "https://buidlguidlhackathon-mertcanciy.vercel.app/",
+    "https://countryclub-ehr19riiu-dhurls99-s-team.vercel.app",
+    "https://adspace-marketplace.vercel.app/marketplace",
+    "https://ticket-kiosk.vercel.app",
+    "https://nextjs-flame-five-21.vercel.app/",
+    "https://charitystream-three.vercel.app/",
+    "https://unit-valentinecodes.vercel.app/",
+    "https://se2multisend.vercel.app/example-ui",
+    "https://se-2-mint.vercel.app/",
+    "https://truetoken.vercel.app/",
+    "https://nftcollateral.vercel.app/nftcollat",
+    "https://accountability-protocol.vercel.app",
+    "https://nft-passport.vercel.app/",
+    "https://poep-angelmc32.vercel.app/",
+    "https://scafflod-eth-demo-nextjs.vercel.app/example-ui",
+    "https://gitpod.io/#https://github.com/darrylyeo/se-2/tree/pnpm",
+    "https://no-life-rohannero.vercel.app/",
+    "https://emotion-owned-liquidity.vercel.app",
+    "https://yeeth-splitter.vercel.app/"
    ];
    const submissionVideo = [
     "",
-    "https://www.google.com",
-    "https://www.google.com"
+    "https://youtu.be/OZpSNxjCBVY",
+    "https://youtu.be/g8LXzjFTN5I",
+    "https://www.youtube.com/watch?v=a_mNnkebA2E",
+    "https://www.youtube.com/watch?v=rUrUHlCVf7o",
+    "https://www.youtube.com/watch?v=-a7I7dZBEME",
+    "https://www.loom.com/share/9beeda651140483bbcaaae5c83fc8392",
+    "https://www.youtube.com/watch?v=cWDF1TGlQqA",
+    "https://www.youtube.com/playlist?list=PLTenf2t5YuIp68AlFJWjFiJtf4svPuQiX",
+    "https://www.youtube.com/watch?v=vBX1NrhjGqA",
+    "https://vimeo.com/815678587/2abc9e45ef",
+    "https://youtu.be/Up5IQpVpyzc",
+    "https://youtu.be/jPh8OXPzpcg",
+    "https://www.youtube.com/watch?v=bDp0-YVpYwc",
+    "https://youtu.be/jgqyhHyqmNg",
+    "https://www.loom.com/share/a1e91056beab4b2c807197b51f8ee741",
+    "https://www.loom.com/share/6df4f1b9e995410ba793b9ac6acf58e3",
+    "https://www.youtube.com/watch?v=Xv-ZR2GbRTc",
+    "https://youtu.be/BDl2Gd4YF-o",
+    "https://youtu.be/N2yG-QxSs2M",
+    "https://youtu.be/x3Ia-2HfFhY",
+    "https://youtu.be/gj-wvpb_e6Q",
+    "https://www.loom.com/share/113d5479cf4d454ebb0f86866fdea579",
+    "https://www.loom.com/share/1dfd06430c6e4091baed741a6211c7e4",
+    "https://nfts-apartment-referrals.netlify.app/",
+    "https://www.loom.com/share/a896156d1d9c4e1ea6e5892ad3ffd47a",
+    "https://www.loom.com/share/6bb14dcc9cab4085805e620773a51032",
+    "https://www.loom.com/share/ef4853ae72bf4d16ad4c4ca00c382dea",
+    "https://www.youtube.com/watch?v=00j14JeSkrw",
+    "https://www.youtube.com/watch?v=md2SPRD4PUg",
+    "https://youtu.be/ttvlBqkK54k",
+    "https://www.youtube.com/watch?v=M6UHlhepcBo",
+    "https://youtu.be/ZSuBqo5wL_E",
+    "https://youtu.be/Md7ylUq_-es",
+    "https://user-images.githubusercontent.com/6624197/230739749-35823b54-6446-4ff6-920e-90d5bb7669eb.mp4",
+    "https://www.youtube.com/watch?v=ALRsm-inSww",
+    "https://youtu.be/Nes7HxJD9GI",
+    "https://youtu.be/qb0VusN3qMg",
+    "https://www.loom.com/share/3d42cd38dc5148928978c1386fcf21ee",
+    "https://youtu.be/5pYo0NlbSns",
+    "https://github.com/scaffold-eth/se-2/pull/291/",
+    "https://youtu.be/pAEtaWvoB_0",
+    "https://youtu.be/vstXjW48e4w",
+    "https://www.loom.com/share/092013ff14a54990bd00bbee9ad6d0a1"
    ];
   let allocatedDisplay="";
   let optionsDisplay="";
@@ -607,9 +730,9 @@ function App(props) {
                   />
                   <span style={{float: "left", marginLeft: "20px", marginTop: "4px"}}>{submissions[i]}</span>
                   <span style={{float: "right", marginTop: "4px"}}>
-                    (<Link to={{ pathname: submissionRepo[1] }} target="_blank">GitHub</Link>)
-                    (<Link to={{ pathname: submissionLive[1] }} target="_blank">Live</Link>)
-                    (<Link to={{ pathname: submissionVideo[1] }} target="_blank">Intro Video</Link>)
+                    (<Link to={{ pathname: submissionRepo[i] }} target="_blank">GitHub</Link>)
+                    (<Link to={{ pathname: submissionLive[i] }} target="_blank">Live</Link>)
+                    (<Link to={{ pathname: submissionVideo[i] }} target="_blank">Intro Video</Link>)
                   </span>
                 </div>
             );
@@ -669,7 +792,7 @@ function App(props) {
                   <h2>🏆 People's Choice Award Voting! 🏆</h2><br></br>
                   <h3><a href="https://docs.google.com/spreadsheets/d/1-mnvyR-IONPI2K79oVDn6oaj35BifcpZuMxWy4dpgTA/edit#gid=224062085" target="_blank">👀 View All Hackathon Submissions Here! 👀</a></h3>
                   <br></br>
-                  <span>Each Hackathon submitter and BuidlGuidl member get 100 votes to allocate as they wish.  You have to send all 100 votes in one transaction, so make sure you have allocated all 100!</span><br></br><br></br>
+                  <span>Hackathon submitters and BuidlGuidl members each get 100 votes to allocate as they wish.  You have to send all 100 votes in one transaction, so make sure you have allocated all 100!</span><br></br><br></br>
                   <span>Voting open until ...</span><br></br><br></br>                        
                   {optionsDisplay}
                   {allocatedDisplay}
