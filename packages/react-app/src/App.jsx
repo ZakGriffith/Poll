@@ -676,9 +676,7 @@ function App(props) {
             console.log("myVote[i]", myVote[i]);
             if(!isNaN(myVote[i]) && typeof myVote[i] !== 'undefined') {
               total+=myVote[i];
-            } else {
-              myVote[i]=0;
-            }
+            } 
             console.log("Total:", total);
           } 
           if(total==100) {
@@ -720,7 +718,6 @@ function App(props) {
                 <div style={{fontWeight: "bold", float:"left", width: "100%"}}>            
                   <Input
                       type="tel"
-                      pattern="[0-9]*"
                       value={myVote[i]}
                       style={{ textAlign: "left", width: 80, float: "left"}}
                       placeholder={"0"}
@@ -729,7 +726,7 @@ function App(props) {
                         if(isNaN(result) || result.length == 0) {
                           result = 0;
                         }
-                        myVote[i] = (parseInt(result));
+                        myVote[i] = parseInt(result);
                         calculateAllocated();
                       }}
                   />

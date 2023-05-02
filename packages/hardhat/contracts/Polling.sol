@@ -10,7 +10,7 @@ contract Polling is Ownable {
 
     uint256 constant options = 44;
     uint256[options] public results = [0];
-    uint256 endDate = block.timestamp + 4 hours;
+    uint256 endDate = block.timestamp + 14 days;
     mapping (address => bool) public voted;
     address[] public allowedUsers = [
         0x0000000000098341a924BD53454654A0dBBc4e43,
