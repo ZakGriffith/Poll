@@ -719,12 +719,17 @@ function App(props) {
             arr.push(
                 <div style={{fontWeight: "bold", float:"left", width: "100%"}}>            
                   <Input
-                      type="number"
-                      min="0"
+                      type="tel"
+                      pattern="[0-9]*"
+                      value={myVote[i]}
                       style={{ textAlign: "left", width: 80, float: "left"}}
                       placeholder={"0"}
                       onChange={e => {
-                        myVote[i] = (parseInt(e.target.value));
+                        let result = e.target.value.replace(/\D/g, '0');
+                        if(isNaN(result) || result.length == 0) {
+                          result = 0;
+                        }
+                        myVote[i] = (parseInt(result));
                         calculateAllocated();
                       }}
                   />

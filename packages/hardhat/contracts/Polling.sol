@@ -8,9 +8,9 @@ contract Polling is Ownable {
 
     event Voted(address indexed voter);
 
-    uint256 public npoll;
+    uint256 constant options = 44;
+    uint256[options] public results = [0];
     uint256 endDate = block.timestamp + 4 hours;
-    uint256[44] public results = [0];
     mapping (address => bool) public voted;
     address[] public allowedUsers = [
         0x0000000000098341a924BD53454654A0dBBc4e43,
@@ -742,10 +742,10 @@ contract Polling is Ownable {
     ];
 
     function vote(uint256[] calldata votes) external onlyAllowedUsers {
-        require(votes.length==44, "Incorrect vote length");
+        require(votes.length==options, "Incorrect vote length");
         require(block.timestamp <= endDate, "Voting has closed");
         require(voted[msg.sender] == false, "Already voted");
-        uint total = 0;
+        uint256 total = 0;
         for(uint256 i = 0; i < votes.length; i++) {
             results[i]+=votes[i];
             total+=votes[i];
@@ -755,7 +755,7 @@ contract Polling is Ownable {
         emit Voted(msg.sender);
     }
 
-    function getResults() public view returns(uint256[44] memory) {
+    function getResults() public view returns(uint256[options] memory) {
         return results;
     }
 
