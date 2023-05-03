@@ -249,7 +249,6 @@ function App(props) {
   const voteEvents = useEventListener(readContracts, "Polling", "Voted", localProvider, 1);
   console.log("Vote events:", voteEvents);
 
-  //Here we need to change what the user sees if they have already voted.
   let voted = false;
   for (let u = 0; u<voteEvents.length; u++) {
     if(address == voteEvents[u]?.args[0]) {
@@ -425,32 +424,32 @@ function App(props) {
   let faucetHint = "";
   const faucetAvailable = localProvider && localProvider.connection && targetNetwork.name.indexOf("local") !== -1;
 
-  const [faucetClicked, setFaucetClicked] = useState(false);
-  if (
-    !faucetClicked &&
-    localProvider &&
-    localProvider._network &&
-    localProvider._network.chainId === 31337 &&
-    yourLocalBalance &&
-    ethers.utils.formatEther(yourLocalBalance) <= 0
-  ) {
-    faucetHint = (
-      <div style={{ padding: 16 }}>
-        <Button
-          type="primary"
-          onClick={() => {
-            faucetTx({
-              to: address,
-              value: ethers.utils.parseEther("0.01"),
-            });
-            setFaucetClicked(true);
-          }}
-        >
-          💰 Grab funds from the faucet ⛽️
-        </Button>
-      </div>
-    );
-  }
+  // const [faucetClicked, setFaucetClicked] = useState(false);
+  // if (
+  //   !faucetClicked &&
+  //   localProvider &&
+  //   localProvider._network &&
+  //   localProvider._network.chainId === 31337 &&
+  //   yourLocalBalance &&
+  //   ethers.utils.formatEther(yourLocalBalance) <= 0
+  // ) {
+  //   faucetHint = (
+  //     <div style={{ padding: 16 }}>
+  //       <Button
+  //         type="primary"
+  //         onClick={() => {
+  //           faucetTx({
+  //             to: address,
+  //             value: ethers.utils.parseEther("0.01"),
+  //           });
+  //           setFaucetClicked(true);
+  //         }}
+  //       >
+  //         💰 Grab funds from the faucet ⛽️
+  //       </Button>
+  //     </div>
+  //   );
+  // }
 
   const optionCount=44;
   const [myVote, setMyVote] = useState(new Array(optionCount).fill(0));
@@ -504,7 +503,6 @@ function App(props) {
     "Emotion owned liquidity",
     "YEETH - YEET your ETH!"
   ];
-  
   const submissionRepo = [
   "",
   "https://github.com/kevinjoshi46b/lsd",
@@ -596,8 +594,8 @@ function App(props) {
     "https://no-life-rohannero.vercel.app/",
     "https://emotion-owned-liquidity.vercel.app",
     "https://yeeth-splitter.vercel.app/"
-   ];
-   const submissionVideo = [
+  ];
+    const submissionVideo = [
     "",
     "https://youtu.be/OZpSNxjCBVY",
     "https://youtu.be/g8LXzjFTN5I",
@@ -642,7 +640,7 @@ function App(props) {
     "https://youtu.be/pAEtaWvoB_0",
     "https://youtu.be/vstXjW48e4w",
     "https://www.loom.com/share/092013ff14a54990bd00bbee9ad6d0a1"
-   ];
+  ];
   let allocatedDisplay="";
   let optionsDisplay="";
   function calculateAllocated() {
@@ -750,7 +748,7 @@ function App(props) {
     <div className="App">
       {/* ✏️ Edit the header and change the title to your project name */}
       <Header />
-      {networkDisplay}
+      {/* {networkDisplay} */}
       <BrowserRouter>
         {/* <Menu style={{ textAlign: "center" }} selectedKeys={[route]} mode="horizontal">
           <Menu.Item key="/">
@@ -794,8 +792,10 @@ function App(props) {
                   <h2>🏆 People's Choice Award Voting! 🏆</h2><br></br>
                   <h3><a href="https://docs.google.com/spreadsheets/d/1-mnvyR-IONPI2K79oVDn6oaj35BifcpZuMxWy4dpgTA/edit#gid=224062085" target="_blank">👀 View All Hackathon Submissions Here! 👀</a></h3>
                   <br></br>
-                  <span>Hackathon submitters and BuidlGuidl members each get 100 votes to allocate as they wish.  You have to send all 100 votes in one transaction, so make sure you have allocated all 100!</span><br></br><br></br>
-                  <span>Voting open until XX/XX/XX</span><br></br><br></br>                        
+                  <span>Hackathon submitters and BuidlGuidl members each get 100 votes to allocate as they wish.  You have to send all 100 votes in one transaction, so make sure you have allocated all 100!</span>
+                  <div style={{marginBottom: 20, marginTop: 20}}>
+                    Voting closes in on 05/14/2023
+                  </div>
                   {optionsDisplay}
                   {allocatedDisplay}
                 </div>
@@ -840,7 +840,6 @@ function App(props) {
       <div style={{ position: "fixed", textAlign: "right", right: 0, top: 0, padding: 10 }}>
         <Account
           address={address}
-          localProvider={localProvider}
           userSigner={userSigner}
           mainnetProvider={mainnetProvider}
           price={price}
@@ -849,19 +848,18 @@ function App(props) {
           logoutOfWeb3Modal={logoutOfWeb3Modal}
           blockExplorer={blockExplorer}
         />
-        {faucetHint}
       </div>
 
-      <div style={{ marginTop: 32}}>
+      <div style={{ marginTop: 32, paddingBottom: 32}}>
         {/* Add your address here */}
         Built by the 🏰 BuidlGuidl
       </div>
 
-      <div style={{ marginTop: 32 }}>
+      {/* <div style={{ marginTop: 32 }}>
         <a target="_blank" style={{ padding: 32, color: "#000" }} href="https://github.com/ZakGriffith/Poll/tree/Polling">
           🍴 Fork me!
         </a>
-      </div>
+      </div> */}
 
       {/* 🗺 Extra UI like gas price, eth price, faucet, and support: */}
       {/* <div style={{ position: "fixed", textAlign: "left", left: 0, bottom: 20, padding: 10 }}>

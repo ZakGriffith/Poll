@@ -755,6 +755,10 @@ contract Polling is Ownable {
         emit Voted(msg.sender);
     }
 
+  function timeLeft() public view returns (uint256) {
+    return block.timestamp >= endDate ? 0 : endDate - block.timestamp; 
+  }
+
     function getResults() public view returns(uint256[options] memory) {
         return results;
     }
