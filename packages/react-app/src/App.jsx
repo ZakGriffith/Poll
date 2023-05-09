@@ -643,7 +643,7 @@ function App(props) {
   ];
   let allocatedDisplay="";
   let optionsDisplay="";
-  function calculateAllocated() {
+  async function calculateAllocated() {
     let count=0;
     let i=0;
     while(i<optionCount) {
@@ -706,6 +706,12 @@ function App(props) {
         <div style={{fontWeight: "bold", fontSize: "20px", marginBottom: "5px"}}>(<span style={{color: "red"}}>{allocated}/100</span>) Votes Allocated</div>
       )
     } 
+
+    useEffect(() => {
+      //Called everytime myVote is updated
+      console.log('Updated State', myVote);
+      calculateAllocated();
+    }, [myVote])
     
     optionsDisplay = (
       (() => {
@@ -719,13 +725,21 @@ function App(props) {
                       value={myVote[i]}
                       style={{ textAlign: "left", width: 80, float: "left"}}
                       placeholder={"0"}
+                      maxLength={3}
                       onChange={e => {
                         let result = e.target.value.replace(/\D/g, '0');
                         if(isNaN(result) || result.length == 0) {
                           result = 0;
                         }
-                        myVote[i] = parseInt(result);
-                        calculateAllocated();
+                        const newValue = parseInt(result);
+                        const nextVotes = myVote.map((value, index) => {
+                          if(i === index) {
+                            return newValue;
+                          } else {
+                            return value;
+                          }
+                        })
+                        setMyVote(nextVotes);
                       }}
                   />
                   <span style={{float: "left", marginLeft: "20px", marginTop: "4px"}}>{submissions[i]}</span>
@@ -794,7 +808,7 @@ function App(props) {
                   <br></br>
                   <span>Hackathon submitters and BuidlGuidl members each get 100 votes to allocate as they wish.  You have to send all 100 votes in one transaction, so make sure you have allocated all 100!</span>
                   <div style={{marginBottom: 20, marginTop: 20}}>
-                    Voting closes in on 05/14/2023
+                    Voting closes on 05/14/2023
                   </div>
                   {optionsDisplay}
                   {allocatedDisplay}
