@@ -693,19 +693,12 @@ function App(props) {
     if(isNaN(allocated)) {
       setAllocated(0);
     }
-    if(allocated < 100) {
-      allocatedDisplay = (
-        <div style={{fontWeight: "bold", fontSize: "20px", marginBottom: "5px"}}>({allocated}/100) Votes Allocated</div>
-      )
-    } else if (allocated == 100) {
-      allocatedDisplay = (
-        <div style={{fontWeight: "bold", fontSize: "20px", marginBottom: "5px"}}>(<span style={{color: "green"}}>{allocated}/100</span>) Votes Allocated</div>
-      )
-    } else if (allocated >= 100){
-      allocatedDisplay = (
-        <div style={{fontWeight: "bold", fontSize: "20px", marginBottom: "5px"}}>(<span style={{color: "red"}}>{allocated}/100</span>) Votes Allocated</div>
-      )
-    } 
+
+    allocatedDisplay = 
+      <div style={{fontWeight: "bold", fontSize: "20px", marginBottom: "5px"}}> 
+        (<span style={{ color: allocated == 100 ? "green" : allocated > 100 ? "red" : "black" }}>{allocated}/100</span>)
+        Votes Allocated
+      </div>
 
     useEffect(() => {
       //Called everytime myVote is updated
