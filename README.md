@@ -1,1 +1,2 @@
-# Poll
+**Scaffold-Eth poll voting.**
+
