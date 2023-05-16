@@ -26,3 +26,13 @@ yarn start
 yarn deploy
 ```
 
+---
+
+### To Do:
+
+* Port to Scaffold-ETH2
+* Create the contract to allow multiple polls.  Anyone can create and poll with open voting or a vote whitelist.  Only those on the whitelist will be able to see that poll.
+* Allow easy entry of voting options and whitelists.  Maybe a copy/paste comma seperated lists into the front end?
+* Allow a variable vote count per voter.
+* Allow multiple voter contribution levels, some will get more votes than others.
+
